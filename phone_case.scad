@@ -240,6 +240,13 @@ bottom_speaker_vertical_offset_from_center = 0.0; // 0.1
 bottom_speaker_width = 10.5; // 0.1
 bottom_speaker_height = 1.2; // 0.1
 
+top_speakers_right = false;
+top_speakers_left = false;
+top_speaker_inner_edge_from_center = 11.6; // 0.1
+top_speaker_vertical_offset_from_center = 0.0; // 0.1
+top_speaker_width = 10.5; // 0.1
+top_speaker_height = 1.2; // 0.1
+
 /* [universal phone adapters] */
 split_in_half = false;
 telescopic_pocket = false;
@@ -1334,6 +1341,22 @@ module usb_cut(){
             rotate([90,0,0])
             soft_cut(
                 width=bottom_speaker_width, height=bottom_speaker_height, disable_bevel=true, horizontal_clearance=1, vertical_clearance=1, shallow_cut=(case_type2=="junglecat" || case_type2=="joycon" || case_type2=="gamepad")
+            );
+        }
+
+        if(top_speakers_right){
+            translate([top_speaker_inner_edge_from_center+top_speaker_width/2,body_length,top_speaker_vertical_offset_from_center])
+            rotate([90,0,0])
+            soft_cut(
+                width=top_speaker_width, height=top_speaker_height, disable_bevel=true, horizontal_clearance=1, vertical_clearance=1,
+                shallow_cut=(case_type2=="junglecat" || case_type2=="joycon" || case_type2=="gamepad")
+            );
+        }
+        if(top_speakers_left){ 
+            translate([-(top_speaker_inner_edge_from_center+top_speaker_width/2),body_length,top_speaker_vertical_offset_from_center])
+            rotate([90,0,0])
+            soft_cut(
+                width=top_speaker_width, height=top_speaker_height, disable_bevel=true, horizontal_clearance=1, vertical_clearance=1, shallow_cut=(case_type2=="junglecat" || case_type2=="joycon" || case_type2=="gamepad")
             );
         }
     }
