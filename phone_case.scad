@@ -221,10 +221,16 @@ fingerprint_combine_with_camera = false;
 /* [charge, headphone, and mic] */
 mic_on_top = false;
 mic_on_bottom = false;
-top_mic_from_right_edge = 14.1; // 0.1
-bottom_mic_from_right_edge = 14.1; // 0.1
-top_mic_offset_up = 0.1; // 0.1
-bottom_mic_offset_up = 0.1; // 0.1
+mic_on_left = false;
+mic_on_right = false;
+top_mic_from_right_edge = 14.1; // 0.01
+bottom_mic_from_right_edge = 14.1; // 0.01
+left_mic_from_top_edge = 14.1; // 0.1
+right_mic_from_top_edge = 14.1; // 0.1
+top_mic_offset_up = 0; // 0.1
+bottom_mic_offset_up = 0; // 0.1
+left_mic_offset_up = 0; // 0.1
+right_mic_offset_up = 0; // 0.1
 headphone_from_left_edge = 14.1; // 0.1
 headphone_on_top = false;
 headphone_on_bottom = false;
@@ -1794,7 +1800,12 @@ module mic_cuts(){
     if (mic_on_bottom) {
         mic_cut(-1, bottom_mic_from_right_edge, bottom_mic_offset_up);
     }
-
+    if (mic_on_left) {
+        side_mic_cut(-1, left_mic_from_top_edge, left_mic_offset_up);
+    }
+    if (mic_on_right) {
+        side_mic_cut(1, right_mic_from_top_edge, right_mic_offset_up);
+    }
 }
 
 module mic_cut(top_or_bottom, mic_from_right_edge, mic_offset_up){
@@ -1814,6 +1825,13 @@ module mic_cut(top_or_bottom, mic_from_right_edge, mic_offset_up){
         rotate([90,0,0])
         cylinder( 20, mic_diam, mic_diam, center=true, $fn=lowFn);
     }   
+}
+
+module side_mic_cut(left_or_right, mic_from_top_edge, mic_offset_up){
+    color("red", 0.2)
+        translate( [ left_or_right*body_width/2,body_length/2-mic_from_top_edge, mic_offset_up ] )
+        rotate([0,90,0])
+        cylinder( 20, mic_diam, mic_diam, center=true, $fn=lowFn);
 }
 
 //headphone_on_top=true; top_headphone_cut();
