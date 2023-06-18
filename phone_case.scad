@@ -175,15 +175,27 @@ left_button_2_length = 10.1; // 0.1
 right_hole_1 = false;
 right_hole_1_from_top = 89.1; // 0.1
 right_hole_1_length = 10.1; // 0.1
+right_hole_1_height = 0; // 0.1
+right_hole_1_chamfer_angle_in_z = 15; // 0.1
+right_hole_1_chamfer_angle_in_y = 10; // 0.1
 right_hole_2 = false;
 right_hole_2_from_top = 89.1; // 0.1
 right_hole_2_length = 10.1; // 0.1
+right_hole_2_height = 0; // 0.1
+right_hole_2_chamfer_angle_in_z = 15; // 0.1
+right_hole_2_chamfer_angle_in_y = 10; // 0.1
 left_hole_1 = false;
 left_hole_1_from_top = 89.1; // 0.1
 left_hole_1_length = 10.1; // 0.1
+left_hole_1_height = 0; // 0.1
+left_hole_1_chamfer_angle_in_z = 15; // 0.1
+left_hole_1_chamfer_angle_in_y = 10; // 0.1
 left_hole_2 = false;
 left_hole_2_from_top = 89.1; // 0.1
 left_hole_2_length = 10.1; // 0.1
+left_hole_2_height = 0; // 0.1
+left_hole_2_chamfer_angle_in_z = 15; // 0.1
+left_hole_2_chamfer_angle_in_y = 10; // 0.1
 
 /* [camera / fingerprint] */
 
@@ -1405,26 +1417,26 @@ module button_cuts(){
         if(left_button_2)
         soft_button_recess(false, left_button_2_length, left_button_2_from_top);
         if(right_hole_1)
-        soft_button_recess(true, right_hole_1_length, right_hole_1_from_top, disable_supports=false);
+        soft_button_recess(true, right_hole_1_length, right_hole_1_from_top, disable_supports=false, right_hole_1_chamfer_angle_in_y, right_hole_1_chamfer_angle_in_z, custom_cut_height = right_hole_1_height);
         if(right_hole_2)
-        soft_button_recess(true, right_hole_2_length, right_hole_2_from_top, disable_supports=false);
+        soft_button_recess(true, right_hole_2_length, right_hole_2_from_top, disable_supports=false, right_hole_2_chamfer_angle_in_y, right_hole_2_chamfer_angle_in_z, custom_cut_height = right_hole_2_height);
         if(left_hole_1)
-        soft_button_recess(false, left_hole_1_length, left_hole_1_from_top, disable_supports=false);
+        soft_button_recess(false, left_hole_1_length, left_hole_1_from_top, disable_supports=false, left_hole_1_chamfer_angle_in_y, left_hole_1_chamfer_angle_in_z, custom_cut_height = left_hole_1_height);
         if(left_hole_2)
-        soft_button_recess(false, left_hole_2_length, left_hole_2_from_top, disable_supports=false);
+        soft_button_recess(false, left_hole_2_length, left_hole_2_from_top, disable_supports=false, left_hole_2_chamfer_angle_in_y, left_hole_2_chamfer_angle_in_z, custom_cut_height = left_hole_2_height);
         
     }
     
 }
 
-module soft_button_recess(right, button_length, button_offset, disable_supports=false) {
+module soft_button_recess(right, button_length, button_offset, disable_supports=false, bevel_angle_y = 15, bevel_angle_z = 10, custom_cut_height = 0) {
     right_or_left = right ? 1 : -1;
     translate( [ right_or_left*(body_width/2),
         body_length/2 - button_offset - button_length/2, 
         buttons_vertical_fudge
     ] )
     rotate([right_or_left*90,0,90])
-    soft_cut(width=button_length, height=soft_cut_height1, disable_support=disable_supports, horizontal_clearance=buttons_clearance_soft_case, bevel_angle_y = 15, bevel_angle_z = 10);
+    soft_cut(width=button_length, height=(custom_cut_height > 0 ? custom_cut_height : soft_cut_height1), disable_support=disable_supports, horizontal_clearance=buttons_clearance_soft_case, bevel_angle_y = bevel_angle_y, bevel_angle_z = bevel_angle_z);
 }
 
 module hard_button_cut(right,  power_button, power_from_top, power_length, volume_buttons, volume_from_top, volume_length){
