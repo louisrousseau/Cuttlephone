@@ -30,6 +30,8 @@ case_thickness = 1.6; // 0.1
 shell_side_stickout = 0; // 0.1
 // Thin the shell lips around the screen bezels, keeping full case thickness at the top and bottom
 shell_enable_angled_screen_bezels = false;
+// Make the case into a "bumper" style with an exposed device back - uses the screen cutout mirrored upside down
+bumper_style_case = false;
 // Thickest the lip should be on the outer edges (in practice - a little under that due to curves used)
 shell_screen_max_lip_outer = 2; // 0.1
 // Thinnest the lip should be on the inner edges
@@ -439,6 +441,14 @@ module shell_cuts(){
     mic_cuts();
     top_headphone_cut();
     screen_cut();
+    // Screen lip "ramps" - slim the lip on the sides for easier gesture nav
+    if (shell_enable_angled_screen_bezels) {
+        screen_angled_bezels();
+    }
+    if (bumper_style_case) {
+        mirror([0,0,1]) screen_cut();
+    }
+
     lanyard_cut();
     universal_cuts();
     version_info_emboss();
@@ -1126,12 +1136,6 @@ module screen_cut(){
         rounding=screen_radius,
         anchor=BOTTOM
     );
-
-    // Screen lip "ramps" - slim the lip on the sides for easier gesture nav
-    if (shell_enable_angled_screen_bezels) {
-        screen_angled_bezels();
-    }
-
 }
 
 *screen_angled_bezels();
