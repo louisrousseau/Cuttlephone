@@ -1365,36 +1365,37 @@ module usb_cut(){
             junglecat_support=(case_type2=="junglecat")
         );
         
+        hclear = 1;
         //speakers
         if(bottom_speakers_right){
-            translate([bottom_speaker_inner_edge_from_center+bottom_speaker_width/2,0,bottom_speaker_vertical_offset_from_center])
+            translate([bottom_speaker_inner_edge_from_center+bottom_speaker_width/2-hclear/2,0,bottom_speaker_vertical_offset_from_center])
             rotate([90,0,0])
             soft_cut(
-                width=bottom_speaker_width, height=bottom_speaker_height, disable_bevel=true, horizontal_clearance=1, vertical_clearance=1,
+                width=bottom_speaker_width, height=bottom_speaker_height, disable_bevel=true, horizontal_clearance=hclear, vertical_clearance=1,
                 shallow_cut=(case_type2=="junglecat" || case_type2=="joycon" || case_type2=="gamepad")
             );
         }
         if(bottom_speakers_left){ 
-            translate([-(bottom_speaker_inner_edge_from_center+bottom_speaker_width/2),0,bottom_speaker_vertical_offset_from_center])
+            translate([-(bottom_speaker_inner_edge_from_center+bottom_speaker_width/2-hclear/2),0,bottom_speaker_vertical_offset_from_center])
             rotate([90,0,0])
             soft_cut(
-                width=bottom_speaker_width, height=bottom_speaker_height, disable_bevel=true, horizontal_clearance=1, vertical_clearance=1, shallow_cut=(case_type2=="junglecat" || case_type2=="joycon" || case_type2=="gamepad")
+                width=bottom_speaker_width, height=bottom_speaker_height, disable_bevel=true, horizontal_clearance=hclear, vertical_clearance=1, shallow_cut=(case_type2=="junglecat" || case_type2=="joycon" || case_type2=="gamepad")
             );
         }
 
         if(top_speakers_right){
-            translate([top_speaker_inner_edge_from_center+top_speaker_width/2,body_length,top_speaker_vertical_offset_from_center])
+            translate([top_speaker_inner_edge_from_center+top_speaker_width/2-hclear/2,body_length,top_speaker_vertical_offset_from_center])
             rotate([90,0,0])
             soft_cut(
-                width=top_speaker_width, height=top_speaker_height, disable_bevel=true, horizontal_clearance=1, vertical_clearance=1,
+                width=top_speaker_width, height=top_speaker_height, disable_bevel=true, horizontal_clearance=hclear, vertical_clearance=1,
                 shallow_cut=(case_type2=="junglecat" || case_type2=="joycon" || case_type2=="gamepad")
             );
         }
         if(top_speakers_left){ 
-            translate([-(top_speaker_inner_edge_from_center+top_speaker_width/2),body_length,top_speaker_vertical_offset_from_center])
+            translate([-(top_speaker_inner_edge_from_center+top_speaker_width/2-hclear/2),body_length,top_speaker_vertical_offset_from_center])
             rotate([90,0,0])
             soft_cut(
-                width=top_speaker_width, height=top_speaker_height, disable_bevel=true, horizontal_clearance=1, vertical_clearance=1, shallow_cut=(case_type2=="junglecat" || case_type2=="joycon" || case_type2=="gamepad")
+                width=top_speaker_width, height=top_speaker_height, disable_bevel=true, horizontal_clearance=hclear, vertical_clearance=1, shallow_cut=(case_type2=="junglecat" || case_type2=="joycon" || case_type2=="gamepad")
             );
         }
     }
