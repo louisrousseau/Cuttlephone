@@ -2270,6 +2270,7 @@
       "charge_cutout_bevel_angle_y": "10",
       "charge_cutout_bevel_angle_z": "10",
       "charge_on_bottom": "true",
+      "charge_vertical_offset_from_center": "-0.85",
       "clamp_top": "false",
       "emboss_font": "Audiowide",
       "emboss_logo": "",
