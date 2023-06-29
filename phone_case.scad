@@ -126,8 +126,13 @@ soft_button_style = "2023-06"; //[2023-06,2022-11]
 // (2022-11 only) how much the buttons stick out
 button_recess = 1.8; // 0.1
 
-// (2023-06 only) how much to the buttons protrude from the device body's edge in the X or Y axis
+// (2023-06 only) how much do the buttons protrude from the device body's edge in the X or Y axis
 button_body_protrusion = 0.5; // 0.1
+
+// (2023-06 only) does the power button protrude a different amount compared to the volume rocker? seen on the Tab S7 and S8 with their integrated fingerprint sensors
+button_body_override_power_button_protrusion = false;
+// (2023-06 only) how much does the power button protrude from the device body's edge in the X or Y axis
+button_body_protrusion_power = 0.5; // 0.1
 
 // (2023-06 only) how thick are the buttons in the Z axis?
 button_case_thickness = 2; // 0.1
@@ -1542,14 +1547,20 @@ module soft_cut( width, height, disable_support=false, disable_bevel=false, beve
 *soft_buttons();
 module soft_buttons(){
     if(left_power_button){
-        soft_button(false, left_power_length, left_power_from_top, button_protrusion = button_protrusion, texture=left_power_button_texture);
+        soft_button(false, left_power_length, left_power_from_top,
+            button_protrusion = button_protrusion,
+            button_body_protrusion = button_body_override_power_button_protrusion ? button_body_protrusion_power : button_body_protrusion, 
+            texture = left_power_button_texture);
     }
     if(left_volume_buttons){
         soft_button(false, left_volume_length, left_volume_from_top, button_protrusion = button_protrusion, rocker_notch=button_volume_rocker_notch);
     }
     
     if(right_power_button){
-        soft_button(true, right_power_length, right_power_from_top, button_protrusion = button_protrusion, texture=right_power_button_texture);
+        soft_button(true, right_power_length, right_power_from_top,
+        button_protrusion = button_protrusion,
+        button_body_protrusion = button_body_override_power_button_protrusion ? button_body_protrusion_power : button_body_protrusion, 
+        texture = right_power_button_texture);
     }
     if(right_volume_buttons){
         soft_button(true, right_volume_length, right_volume_from_top, button_protrusion = button_protrusion, rocker_notch=button_volume_rocker_notch);
@@ -1566,7 +1577,7 @@ module soft_buttons(){
     soft_button(right=false, button_length=left_button_2_length, button_protrusion = button_protrusion, button_from_top=left_button_2_from_top);
 }
 
-module soft_button(right, button_length, button_from_top, button_protrusion = 0.8, rocker_notch=false, texture="none"){
+module soft_button(right, button_length, button_from_top, button_protrusion = 0.8, button_body_protrusion = button_body_protrusion, rocker_notch=false, texture="none"){
     right_or_left = right ? 1 : -1;
     //if the case is thin and the button sticks out a lot, extend the button
     button_protrusion_compensated = (button_body_protrusion >  case_thickness2+button_protrusion) ? button_body_protrusion+button_protrusion : case_thickness2+button_protrusion;
