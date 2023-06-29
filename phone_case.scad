@@ -197,7 +197,7 @@ left_hole_2_height = 0; // 0.1
 left_hole_2_chamfer_angle_in_z = 15; // 0.1
 left_hole_2_chamfer_angle_in_y = 10; // 0.1
 
-/* [camera / fingerprint] */
+/* [back camera] */
 
 //camera cutout is a rectangle with rounded corners
 camera = true;
@@ -224,6 +224,7 @@ camera_height_2 = 9.1; // 0.1
 camera_from_side_2 = 8.5; // 0.1
 camera_from_top_2 = 8.7; // 0.1
 
+/* [back fingerprint reader] */
 fingerprint = false;
 fingerprint_center_from_top = 36.5; // 0.1
 fingerprint_diam = 13.1; // 0.1
@@ -231,6 +232,18 @@ fingerprint_cutout_chamfer_angle = 45.0; // [0.0:0.1:89.9]
 
 // Combines the fingerprint sensor and camera opening into a single larger one. One example where this works well is a thicker soft case on the Pixel 5. (Using OpenSCAD hull() to be specific.)
 fingerprint_combine_with_camera = false;
+
+/* [front camera] */
+
+//camera cutout is a cylinder
+front_camera = false;
+front_camera_diameter = 5.0; // 0.1
+front_camera_from_right_side = 2.0; // 0.1
+front_camera_from_top = 2.0; // 0.1
+// extra gap around camera. 0.5 - 1.0 recommended. 
+front_camera_clearance = 0.5; // 0.1
+
+front_camera_cutout_chamfer_angle = 45.0; // [0.0:0.1:89.9]
 
 /* [charge, headphone, and mic] */
 mic_on_top = false;
@@ -438,6 +451,7 @@ module gamepad(){
 module shell_cuts(){
     usb_cut();
     button_cuts();
+    front_camera_cut();
 
     if (fingerprint_combine_with_camera) {
         hull() {
@@ -1807,6 +1821,24 @@ module fingerprint_cut(){
         -body_thickness/2-fingerprint_cut_height/2 
     ])
     cylinder( fingerprint_cut_height, fingerprint_radius2, fingerprint_radius, true);
+}
+
+*front_camera_cut();
+module front_camera_cut(){
+    height = (case_type2=="joycon") ? joycon_thickness : case_thickness2*10; // Times 10 is just an arbitrary choice, cleaner preview than having the surfaces overlap
+    front_chamfer_width = case_thickness2*10 * tan(front_camera_cutout_chamfer_angle);
+    front_camera_radius = front_camera_diameter/2;
+    if(front_camera)
+    color("red", 0.2)
+    up(body_thickness/2)
+    back(body_length/2-front_camera_from_top-front_camera_radius+front_camera_clearance)
+    right(body_width/2-front_camera_from_right_side-front_camera_radius+front_camera_clearance)
+    cyl(
+        d1=front_camera_diameter+front_camera_clearance*2, 
+        d2=front_camera_diameter+front_camera_clearance*2+front_chamfer_width, 
+        h=height,
+        anchor=[0,0,-1]
+    );
 }
 
 //mic_on_top=true; mic_cuts();
