@@ -250,6 +250,7 @@ headphone_on_top = false;
 headphone_on_bottom = false;
 
 charge_on_bottom = true;
+charge_vertical_offset_from_center = 0; // 0.01
 charge_cutout_bevel_angle_y = 10;
 charge_cutout_bevel_angle_z = 10;
 
@@ -1320,8 +1321,8 @@ module lanyard_cut(){
 
 // The USB Type C spec prescribes 12.35 x 6.5 for the overmold portion of a plug, but practice shows this is often taken as a suggestion by cable manufacturers.
 // Throw in manufacturing and printing tolerances in the mix and it is wiser to leave some room for error.
-usb_cut_width = 13;
-usb_cut_height = 7;
+usb_cut_width = 12.5;
+usb_cut_height = 6.8;
 usb_cut_rounding = 1;
 
 speaker_cut_width = body_width*0.2;
@@ -1338,6 +1339,7 @@ module usb_cut(){
     }
     else { //soft cut
         //usb
+        translate([0,0,charge_vertical_offset_from_center])
         rotate([90,0,0])
         soft_cut(
             width=usb_cut_width,
