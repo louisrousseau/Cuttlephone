@@ -2238,6 +2238,8 @@
       "build_phone": "true",
       "build_soft": "true",
       "bumper_style_case": "true",
+      "button_body_override_power_button_protrusion": "true",
+      "button_body_protrusion_power": "0.2",
       "button_case_thickness": "2.2",
       "button_padding": "2",
       "button_protrusion": "0.5",
