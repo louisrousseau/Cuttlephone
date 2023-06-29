@@ -242,7 +242,9 @@ fingerprint_combine_with_camera = false;
 //camera cutout is a cylinder
 front_camera = false;
 front_camera_diameter = 5.0; // 0.1
+// use the center of the lens to position
 front_camera_from_right_side = 2.0; // 0.1
+// use the center of the lens to position
 front_camera_from_top = 2.0; // 0.1
 // extra gap around camera. 0.5 - 1.0 recommended. 
 front_camera_clearance = 0.5; // 0.1
@@ -1842,13 +1844,13 @@ module front_camera_cut(){
     if(front_camera)
     color("red", 0.2)
     up(body_thickness/2)
-    back(body_length/2-front_camera_from_top-front_camera_radius+front_camera_clearance)
-    right(body_width/2-front_camera_from_right_side-front_camera_radius+front_camera_clearance)
+    back(body_length/2-front_camera_from_top)
+    right(body_width/2-front_camera_from_right_side+front_camera_radius+front_camera_clearance)
     cyl(
         d1=front_camera_diameter+front_camera_clearance*2, 
         d2=front_camera_diameter+front_camera_clearance*2+front_chamfer_width, 
         h=height,
-        anchor=[0,0,-1]
+        anchor=CENTER+BOTTOM+RIGHT
     );
 }
 
