@@ -1124,7 +1124,6 @@ module gamepad_faceplates(){
 
 *translate([0,0,10]) screen_cut();
 module screen_cut(){
-    //TODO: this offset is janky. I cannot properly align "top face cut" 
     screen_cut_height = case_thickness2+extra_lip_bonus;
     screen_corners = [
         screen_radius + screen_extra_bottom_right,
@@ -1145,12 +1144,6 @@ module screen_cut(){
         height=screen_cut_height,
         top=os_circle(r=-smooth_edge_radius) //negative radius
      );
-    
-    //top face cut
-    //disabled cus I can't align it
-    * color("red", 0.2)
-    translate([0, 0, body_thickness/2 + case_thickness2 + extra_lip_bonus + 0.401])
-    cuboid([body_width+smooth_edge_radius, body_length+smooth_edge_radius, 10], anchor=BOTTOM);
     
     //vertical cut
     color("red", 0.1)
