@@ -2227,7 +2227,7 @@
       "bottom_mic_from_right_edge": "14.1",
       "bottom_mic_offset_up": "0",
       "bottom_speaker_height": "2",
-      "bottom_speaker_inner_edge_from_center": "53",
+      "bottom_speaker_inner_edge_from_center": "52.5",
       "bottom_speaker_vertical_offset_from_center": "0",
       "bottom_speaker_width": "13",
       "bottom_speakers_left": "true",
@@ -2381,7 +2381,7 @@
       "top_mic_from_right_edge": "82.65",
       "top_mic_offset_up": "0",
       "top_speaker_height": "2",
-      "top_speaker_inner_edge_from_center": "53",
+      "top_speaker_inner_edge_from_center": "52.5",
       "top_speaker_width": "13",
       "top_speakers_left": "true",
       "top_speakers_right": "true"
