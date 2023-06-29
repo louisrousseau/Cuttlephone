@@ -17,7 +17,6 @@ include <libraries/BOSL2_submodule/shapes3d.scad>
 
 /*  measurements from the phone
  *  all values are in mm
- *  Customizer's UI precision (0.1, 0.01, etc) depends on the precision of the variable.
  */
 
 /* [shell] */
