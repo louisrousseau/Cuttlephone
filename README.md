@@ -45,5 +45,8 @@ You can follow progress here:
 
 ...
 
+# Additional printing and usage notes
+## Galaxy Tab S7, S8
+These tablets have integrated fingerprint sensors on their power buttons, the JSON file defaults to an opening because of this. However, if you don't care for the fingerprint reader, you can enable `right power button` and disable `right hole 1` to get a regular button instead.
 
 Licensed under Creative Commons CC-BY-SA 4.0
