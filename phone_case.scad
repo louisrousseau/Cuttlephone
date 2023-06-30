@@ -30,7 +30,8 @@ shell_side_stickout = 0; // 0.1
 // Thin the shell lips around the screen bezels, keeping full case thickness at the top and bottom
 shell_enable_angled_screen_bezels = false;
 // Make the case into a "bumper" style with an exposed device back - uses the screen cutout mirrored upside down
-bumper_style_case = false;
+shell_back_style = "full"; // [full, open, four, six, eight, nine, twelve]
+shell_back_rib_width = 10; // 0.1
 // Thickest the lip should be on the outer edges (in practice - a little under that due to curves used)
 shell_screen_max_lip_outer = 2; // 0.1
 // Thinnest the lip should be on the inner edges
@@ -478,9 +479,8 @@ module shell_cuts(){
     if (shell_enable_angled_screen_bezels) {
         screen_angled_bezels();
     }
-    if (bumper_style_case) {
-        mirror([0,0,1]) screen_cut();
-    }
+
+    device_back_cuts();
 
     lanyard_cut();
     universal_cuts();
@@ -1144,7 +1144,7 @@ module screen_cut(){
         height=screen_cut_height,
         top=os_circle(r=-smooth_edge_radius) //negative radius
      );
-    
+
     //vertical cut
     color("red", 0.1)
     translate([0, 0, body_thickness/2 - screen_cut_height + case_thickness2 + extra_lip_bonus + 0.05])
@@ -1321,6 +1321,48 @@ module screen_angled_bezels(){
     }
 }
 
+*device_back_cuts();
+module device_back_cuts(){
+    if (shell_back_style == "full") {
+        // Do nothing
+    } else if (shell_back_style == "open") {
+        //back_cut(screen_width, screen_length);
+        mirror([0,0,1]) screen_cut();
+    } else {
+
+        ybar = (shell_back_style == "twelve") ? 3 : (shell_back_style == "nine") ? 2 : 1;
+        xbar = (shell_back_style == "twelve") ? 4 : (shell_back_style == "eight") ? 3 : (shell_back_style == "six" || shell_back_style == "nine") ? 2 : (shell_back_style == "four") ? 1 : 1;
+
+        difference() {
+            mirror([0,0,1]) screen_cut();
+
+            echo(xbar=xbar, shell_back_style=shell_back_style);
+
+            l = screen_length/2+screen_radius;
+            m = screen_width/2+screen_radius;
+            translate([0,l,0]) {
+                for (i=[1:1:xbar]) {
+                    echo(i=i);
+                    translate([0,-(l*2*i/(xbar+1)),0])
+                    cuboid([screen_width+screen_radius*2,shell_back_rib_width,body_thickness/2 + case_thickness2], anchor = TOP+CENTER, rounding = case_thickness2/2, edges = [BOT+FWD,BOT+BACK]);
+                }
+            }
+
+            translate([-m,0,0]) {
+                for (j=[1:1:ybar]) {
+                    echo(j=j);
+                    translate([(m*2*j/(ybar+1)),0,0])
+                    cuboid([shell_back_rib_width,screen_length+screen_radius*2,body_thickness/2 + case_thickness2], anchor = TOP+CENTER, rounding = case_thickness2/2, edges = [BOT+LEFT,BOT+RIGHT]);
+                }
+            }
+        }
+    }
+
+    module back_cut(width, length) {
+        // Corner rounding behaviour incorrect
+        translate([0,0,-body_thickness/2]) cuboid([width, length, case_thickness2], rounding = -case_thickness2, edges = BOTTOM, anchor = CENTER+TOP);
+    }
+}
 
 *color("red", 0.2) lanyard_cut();
 module lanyard_cut(){
