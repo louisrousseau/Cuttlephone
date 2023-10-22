@@ -209,7 +209,7 @@ camera = true;
 camera_width = 20.5; // 0.1
 camera_height = 9.1; // 0.1
 //get a circle by setting camera_radius to half of height and width
-camera_radius = 4.5; // 0.1
+camera_radius = 4.5; // 0.01
 camera_from_side = 8.5; // 0.1
 camera_from_top = 8.7; // 0.1
 // extra gap around camera. 0.5 - 1.0 recommended. 
@@ -218,7 +218,7 @@ camera_clearance = 1.1; // 0.1
 camera_protrusion = 0.0; // 0.1
 // Does the camera block interact with the edges of the phone - e.g. "island" does not: Pixel 1 to 5, all iPhones so far; "bar" protrudes from the phone back and joins on both sides: Pixel 6, 7; (unsupported) "right_corner" Galaxy S21
 camera_block_style = "island"; //[island,bar,right_corner]
-camera_block_fillet_radius = 0.5; // 0.1
+camera_block_fillet_radius = 0.5; // 0.01
 
 camera_cutout_chamfer_angle = 45.0; // [0.0:0.1:89.9]
 
@@ -228,6 +228,7 @@ camera_width_2 = 20.5; // 0.1
 camera_height_2 = 9.1; // 0.1
 camera_from_side_2 = 8.5; // 0.1
 camera_from_top_2 = 8.7; // 0.1
+camera_radius_2 = 0.0; // 0.01
 
 /* [back fingerprint reader] */
 fingerprint = false;
@@ -252,19 +253,37 @@ front_camera_clearance = 0.5; // 0.1
 
 front_camera_cutout_chamfer_angle = 45.0; // [0.0:0.1:89.9]
 
+/* [light sensor] */
+
+//sensor cutout is a cylinder
+ambient_light = false;
+ambient_light_diameter = 5.0; // 0.1
+// use the center of the lens to position
+ambient_light_from_right_side = 2.0; // 0.1
+// use the center of the lens to position
+ambient_light_from_top = 2.0; // 0.1
+// extra gap around camera. 0.5 - 1.0 recommended. 
+ambient_light_clearance = 0.5; // 0.1
+
+ambient_light_cutout_chamfer_angle = 45.0; // [0.0:0.1:89.9]
+
+
 /* [charge, headphone, and mic] */
 mic_on_top = false;
 mic_on_bottom = false;
 mic_on_left = false;
 mic_on_right = false;
+mic_on_right_2 = false;
 top_mic_from_right_edge = 14.1; // 0.01
 bottom_mic_from_right_edge = 14.1; // 0.01
 left_mic_from_top_edge = 14.1; // 0.1
 right_mic_from_top_edge = 14.1; // 0.1
+right_mic_2_from_top_edge = 14.1; // 0.1
 top_mic_offset_up = 0; // 0.1
 bottom_mic_offset_up = 0; // 0.1
 left_mic_offset_up = 0; // 0.1
 right_mic_offset_up = 0; // 0.1
+right_mic_2_offset_up = 0; // 0.1
 headphone_from_left_edge = 14.1; // 0.1
 headphone_on_top = false;
 headphone_on_bottom = false;
@@ -459,6 +478,7 @@ module shell_cuts(){
     usb_cut();
     button_cuts();
     front_camera_cut();
+    ambient_light_cut()
 
     if (fingerprint_combine_with_camera) {
         hull() {
@@ -1532,7 +1552,7 @@ module hard_button_cut(right,  power_button, power_from_top, power_length, volum
 //simple cutout for mute switches
 module soft_cut( width, height, disable_support=false, disable_bevel=false, bevel_angle_y = 30, bevel_angle_z = 22.5, horizontal_clearance = 0, vertical_clearance = 0, shallow_cut=false, junglecat_support=false, joycon_support=false){
     cut_height = height;
-    cut_depth = shallow_cut ? 0 : 15;
+    cut_depth = shallow_cut ? 0 : 4;
     
     difference() {
         //cutout
@@ -1561,7 +1581,7 @@ module soft_cut( width, height, disable_support=false, disable_bevel=false, beve
             size1=[ width+horizontal_clearance*2, cut_height+vertical_clearance*2 ], 
             size2=[ width+horizontal_clearance*2, cut_height+vertical_clearance*2 ], 
             rounding=button_cut_rounding, 
-            h=case_thickness2*3+cut_depth, 
+            h=case_thickness2+cut_depth, 
             anchor=CENTER, 
             $fn=lowFn
         );
@@ -1834,7 +1854,7 @@ module camera_cut(){
 
 //extra_camera_cut();
 module extra_camera_cut(){
-    camera_radius_clearanced = camera_radius+camera_clearance;
+    camera_radius_clearanced = camera_radius_2+camera_clearance;
     height = 5;
     chamfer_width = case_thickness2*2 * tan(camera_cutout_chamfer_angle);
     if(camera_cut_2)
@@ -1889,6 +1909,24 @@ module front_camera_cut(){
     );
 }
 
+*ambient_light_cut();
+module ambient_light_cut(){
+    height = (case_type2=="joycon") ? joycon_thickness : case_thickness2*10; // Times 10 is just an arbitrary choice, cleaner preview than having the surfaces overlap
+    front_chamfer_width = case_thickness2*10 * tan(ambient_light_cutout_chamfer_angle);
+    ambient_light_radius = ambient_light_diameter/2;
+    if(ambient_light)
+    color("red", 0.2)
+    up(body_thickness/2)
+    back(body_length/2-ambient_light_from_top)
+    right(body_width/2-ambient_light_from_right_side+ambient_light_radius+ambient_light_clearance)
+    cyl(
+        d1=ambient_light_diameter+ambient_light_clearance*2, 
+        d2=ambient_light_diameter+ambient_light_clearance*2+front_chamfer_width, 
+        h=height,
+        anchor=CENTER+BOTTOM+RIGHT
+    );
+}
+
 //mic_on_top=true; mic_cuts();
 mic_diam = 2.0;
 module mic_cuts(){
@@ -1903,6 +1941,9 @@ module mic_cuts(){
     }
     if (mic_on_right) {
         side_mic_cut(1, right_mic_from_top_edge, right_mic_offset_up);
+    }
+    if (mic_on_right_2) {
+        side_mic_cut(1, right_mic_2_from_top_edge, right_mic_2_offset_up);
     }
 }
 
