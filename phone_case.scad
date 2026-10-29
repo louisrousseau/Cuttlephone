@@ -1549,7 +1549,7 @@ module hard_button_cut(right,  power_button, power_from_top, power_length, volum
 //simple cutout for mute switches
 module soft_cut( width, height, disable_support=false, disable_bevel=false, bevel_angle_y = 30, bevel_angle_z = 22.5, horizontal_clearance = 0, vertical_clearance = 0, shallow_cut=false, junglecat_support=false, joycon_support=false){
     cut_height = height;
-    cut_depth = shallow_cut ? 0 : 15;
+    cut_depth = shallow_cut ? 0 : 4;
     
     difference() {
         //cutout
@@ -1578,7 +1578,7 @@ module soft_cut( width, height, disable_support=false, disable_bevel=false, beve
             size1=[ width+horizontal_clearance*2, cut_height+vertical_clearance*2 ], 
             size2=[ width+horizontal_clearance*2, cut_height+vertical_clearance*2 ], 
             rounding=button_cut_rounding, 
-            h=case_thickness2*3+cut_depth, 
+            h=case_thickness2+cut_depth, 
             anchor=CENTER, 
             $fn=lowFn
         );
