@@ -228,6 +228,7 @@ camera_width_2 = 20.5; // 0.1
 camera_height_2 = 9.1; // 0.1
 camera_from_side_2 = 8.5; // 0.1
 camera_from_top_2 = 8.7; // 0.1
+camera_radius_2 = 0.0; // 0.01
 
 /* [back fingerprint reader] */
 fingerprint = false;
@@ -1834,7 +1835,7 @@ module camera_cut(){
 
 //extra_camera_cut();
 module extra_camera_cut(){
-    camera_radius_clearanced = camera_radius+camera_clearance;
+    camera_radius_clearanced = camera_radius_2+camera_clearance;
     height = 5;
     chamfer_width = case_thickness2*2 * tan(camera_cutout_chamfer_angle);
     if(camera_cut_2)
