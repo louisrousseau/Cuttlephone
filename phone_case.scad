@@ -273,14 +273,17 @@ mic_on_top = false;
 mic_on_bottom = false;
 mic_on_left = false;
 mic_on_right = false;
+mic_on_right_2 = false;
 top_mic_from_right_edge = 14.1; // 0.01
 bottom_mic_from_right_edge = 14.1; // 0.01
 left_mic_from_top_edge = 14.1; // 0.1
 right_mic_from_top_edge = 14.1; // 0.1
+right_mic_2_from_top_edge = 14.1; // 0.1
 top_mic_offset_up = 0; // 0.1
 bottom_mic_offset_up = 0; // 0.1
 left_mic_offset_up = 0; // 0.1
 right_mic_offset_up = 0; // 0.1
+right_mic_2_offset_up = 0; // 0.1
 headphone_from_left_edge = 14.1; // 0.1
 headphone_on_top = false;
 headphone_on_bottom = false;
@@ -1938,6 +1941,9 @@ module mic_cuts(){
     }
     if (mic_on_right) {
         side_mic_cut(1, right_mic_from_top_edge, right_mic_offset_up);
+    }
+    if (mic_on_right_2) {
+        side_mic_cut(1, right_mic_2_from_top_edge, right_mic_2_offset_up);
     }
 }
 
