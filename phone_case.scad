@@ -253,6 +253,21 @@ front_camera_clearance = 0.5; // 0.1
 
 front_camera_cutout_chamfer_angle = 45.0; // [0.0:0.1:89.9]
 
+/* [light sensor] */
+
+//sensor cutout is a cylinder
+ambient_light = false;
+ambient_light_diameter = 5.0; // 0.1
+// use the center of the lens to position
+ambient_light_from_right_side = 2.0; // 0.1
+// use the center of the lens to position
+ambient_light_from_top = 2.0; // 0.1
+// extra gap around camera. 0.5 - 1.0 recommended. 
+ambient_light_clearance = 0.5; // 0.1
+
+ambient_light_cutout_chamfer_angle = 45.0; // [0.0:0.1:89.9]
+
+
 /* [charge, headphone, and mic] */
 mic_on_top = false;
 mic_on_bottom = false;
@@ -460,6 +475,7 @@ module shell_cuts(){
     usb_cut();
     button_cuts();
     front_camera_cut();
+    ambient_light_cut()
 
     if (fingerprint_combine_with_camera) {
         hull() {
@@ -1885,6 +1901,24 @@ module front_camera_cut(){
     cyl(
         d1=front_camera_diameter+front_camera_clearance*2, 
         d2=front_camera_diameter+front_camera_clearance*2+front_chamfer_width, 
+        h=height,
+        anchor=CENTER+BOTTOM+RIGHT
+    );
+}
+
+*ambient_light_cut();
+module ambient_light_cut(){
+    height = (case_type2=="joycon") ? joycon_thickness : case_thickness2*10; // Times 10 is just an arbitrary choice, cleaner preview than having the surfaces overlap
+    front_chamfer_width = case_thickness2*10 * tan(ambient_light_cutout_chamfer_angle);
+    ambient_light_radius = ambient_light_diameter/2;
+    if(ambient_light)
+    color("red", 0.2)
+    up(body_thickness/2)
+    back(body_length/2-ambient_light_from_top)
+    right(body_width/2-ambient_light_from_right_side+ambient_light_radius+ambient_light_clearance)
+    cyl(
+        d1=ambient_light_diameter+ambient_light_clearance*2, 
+        d2=ambient_light_diameter+ambient_light_clearance*2+front_chamfer_width, 
         h=height,
         anchor=CENTER+BOTTOM+RIGHT
     );
